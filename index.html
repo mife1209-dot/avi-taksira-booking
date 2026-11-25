@@ -315,7 +315,7 @@ function vHome(){
 }
 function vGender(){
   return top(isAdmF()?'a-diary':'home')+`<main class="page">${steps(1)}<h1>${F.moving?'שינוי תור':'קביעת תור'}</h1><p class="sub">למי התור?</p>
-  <div class="gt">${[['m','גבר','תספורת · תספורת וזקן'],['f','אישה','תספורת · פן · צבע · החלקות ועוד']].map(([g,t,s])=>`<button class="gtile ${F.g===g?'on':''}" data-act="g" data-v="${g}">${IC[g]}<b>${t}</b><span>${s}</span></button>`).join('')}</div></main>`;
+  <div class="gt">${[['m','גבר','תספורת · תספורת וזקן'],['f','אישה','תספורת · פן · צבע · החלקות ועוד']].map(([g,t,s])=>`<button class="gtile ${F.g===g?'on':''}" data-act="g" data-v="${g}"><b>${t}</b><span>${s}</span></button>`).join('')}</div></main>`;
 }
 function vServices(){
   const L=S.services.filter(s=>s.g===F.g&&s.active),t=tot(F.sel);
