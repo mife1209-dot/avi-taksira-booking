@@ -311,7 +311,7 @@ function vHome(){
   const h=S.settings.hours[new Date().getDay()];
   return `<div class="home"><div class="hero"><img src="${FULL_IMG}" alt="סטודיו אבי טקסירה לעיצוב שיער"></div>
   <div class="hbtns"><button class="hb pri" data-act="start">${IC.cal}קביעת תור</button><button class="hb" data-act="go" data-v="manage">${IC.edit}שינוי / ביטול תור</button><a class="hb" href="${esc(wazeLink())}" target="_blank" rel="noopener">${IC.pin}ניווט למספרה</a></div>
-  <div class="hinfo"><span>${h&&h.open?`פתוח היום ${h.from}–${h.to}`:'סגור היום'}</span><a href="#admin">כניסת מנהל</a></div></div>`;
+  <div class="hinfo"><span>${h&&h.open?`פתוח היום ${h.from}–${h.to}`:'סגור היום'}</span></div></div>`;
 }
 function vGender(){
   return top(isAdmF()?'a-diary':'home')+`<main class="page">${steps(1)}<h1>${F.moving?'שינוי תור':'קביעת תור'}</h1><p class="sub">למי התור?</p>
@@ -366,14 +366,14 @@ function vManage(){
 }
 
 /* ===== admin ===== */
-function vLogin(){return `<div class="login"><a class="brand" href="#home" style="display:block;margin-bottom:18px">AVI TAKSIRA</a><div class="card form"><h2 style="margin:0">כניסת מנהל</h2><label>קוד כניסה<input id="pin" type="password" inputmode="numeric" autocomplete="current-password"></label><button class="btn pri" data-act="login">כניסה</button><span class="mut" style="font-size:14px">קוד ברירת המחדל באב־הטיפוס: 1234. אפשר לשנות בהגדרות.</span></div></div>`}
+function vLogin(){return `<div class="login"><span class="brand" style="display:block;margin-bottom:18px">AVI TAKSIRA</span><div class="card form"><h2 style="margin:0">כניסת מנהל</h2><label>קוד כניסה<input id="pin" type="password" inputmode="numeric" autocomplete="current-password"></label><button class="btn pri" data-act="login">כניסה</button><span class="mut" style="font-size:14px">קוד ברירת המחדל באב־הטיפוס: 1234. אפשר לשנות בהגדרות.</span></div></div>`}
 function autoMonthly(){
   const n=now(),lm=mk(dk(new Date(n.getFullYear(),n.getMonth()-1,15)));
   if(!S.reports.some(r=>r.month===lm)&&S.appts.some(a=>a.date.startsWith(lm))){S.reports.push(snapshot(lm,true));save()}
 }
 function aShell(tab,body){
   const p=S.reports.find(r=>!r.downloaded);
-  return `<header class="atop"><a class="brand" href="#home">AVI TAKSIRA</a><span class="mut sp1">ניהול המספרה</span><button class="btn sm" data-act="logout">יציאה</button></header>
+  return `<header class="atop"><a class="brand" href="#a-diary">AVI TAKSIRA</a><span class="mut sp1">ניהול המספרה</span><button class="btn sm" data-act="logout">יציאה</button></header>
   <nav class="atabs">${[['a-diary','יומן'],['a-report','דוח חודשי'],['a-services','שירותים ומחירים'],['a-settings','הגדרות']].map(([h,t])=>`<a href="#${h}" class="${tab===h?'on':''}">${t}</a>`).join('')}</nav>
   ${p?`<div class="banner"><div><b>הדוח החודשי ל${esc(mName(p.month))} מוכן להורדה</b><span>הדוח נשמר אוטומטית בגיבוי המערכת. יש להוריד אותו ולשמור עותק או להעביר לרואה החשבון.</span></div><button class="btn pri sm" data-act="dlrep" data-v="${esc(p.created)}">הורדת הדוח</button></div>`:''}
   <main class="apage">${body}</main>`;
@@ -534,7 +534,7 @@ document.addEventListener('click',e=>{
     case 'ccancel':askCancel(a,'לקוח',()=>{$('#ml').innerHTML=manList()});break;
     case 'cmove':newF();Object.assign(F,{g:a.g,sel:a.svcIds.filter(id=>{const s=S.services.find(x=>x.id===id);return s&&s.active}),date:a.date,moving:a.no});calMonth=mk(a.date);go(F.sel.length?'date':'services');break;
     case 'login':if($('#pin').value===S.settings.pin){admin=true;try{sessionStorage.setItem(KEY+'-adm','1')}catch(x){}A.day=A.day||dk(now());go('a-diary')}else toast('קוד שגוי',1);break;
-    case 'logout':admin=false;try{sessionStorage.removeItem(KEY+'-adm')}catch(x){}go('home');break;
+    case 'logout':admin=false;try{sessionStorage.removeItem(KEY+'-adm')}catch(x){}go('admin');break;
     case 'aview':A.view=v;render();break;
     case 'anav':{const n=+v,d=pd(A.day);A.day=A.view==='day'?dk(addDays(d,n)):A.view==='week'?dk(addDays(d,7*n)):dk(new Date(d.getFullYear(),d.getMonth()+n,1));render();break}
     case 'toDay':A.view='day';A.day=v;render();break;
